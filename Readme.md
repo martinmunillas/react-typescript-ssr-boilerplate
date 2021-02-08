@@ -1,5 +1,5 @@
 # React-Typescript-SSR-Boilerplate
-Just clone and have a fast launch
+A react project with ssr and typescript to clone and have a fast launch🚀 
 
 ## Stack
 Tyescript, React, ApolloClient, Docker, Jest, Cypress
