@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+    environment:
+      API_URL: 'http://localhost:/3000'
+      PORT: 4000
+    ports:
+      - '4000:4000'
+    volumes:
+      - .:/usr/src
+      - /usr/src/node_modules
