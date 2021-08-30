@@ -1,14 +1,14 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 import {
   useParams,
   useLocation,
   useHistory,
   useRouteMatch,
-} from 'react-router-dom';
-import queryString from 'query-string';
+} from "react-router-dom";
+import queryString from "query-string";
 
 export function useRouter() {
-  const params = useParams<{ shopId?: string, productId?: string }>();
+  const params = useParams<Partial<{}> /*add here your params */>();
   const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();

@@ -1,15 +1,31 @@
-import { RequestHandler } from 'express';
-import React from 'react';
-import { StaticRouter } from 'react-router-dom';
-import { StyleSheetManager, ServerStyleSheet } from 'styled-components';
-import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
-import { renderToStringWithData } from '@apollo/client/react/ssr';
-import fetch from 'cross-fetch';
+import type { RequestHandler } from "express";
+import React from "react";
+import { StaticRouter } from "react-router-dom";
+import { StyleSheetManager, ServerStyleSheet } from "styled-components";
+import {
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { renderToStringWithData } from "@apollo/client/react/ssr";
+import fetch from "cross-fetch";
 
-import getManifest from './getManifest';
-import { API_URL } from '../../shared/utils/consts';
-import App from '../../frontend/app';
-const setResponse = (html: string, apolloState: any, js: string, styles: string) => {
+import getManifest from "./getManifest";
+import App from "../../frontend/app";
+import dotenv from "dotenv";
+import { isDev } from "../../shared/utils/consts";
+
+dotenv.config();
+
+const { API_URL } = process.env;
+
+const setResponse = (
+  html: string,
+  apolloState: any,
+  js: string,
+  styles: string
+) => {
   return `<!DOCTYPE html>
           <html lang="en">
           <head>
@@ -21,16 +37,19 @@ const setResponse = (html: string, apolloState: any, js: string, styles: string)
           <body>
               <div id="root">${html}</div>
               <script>
-                window.__APOLLO_STATE__ = ${JSON.stringify(apolloState).replace(/</g, '\\u003c')};
+                window.__APOLLO_STATE__ = ${JSON.stringify(apolloState).replace(
+                  /</g,
+                  "\\u003c"
+                )};
               </script>
-              <script src="/build${js}"></script>
+              <script src="${js}"></script>
           </body>
           </html>`;
 };
 
 const renderApp = (): RequestHandler => {
   return async (req, res) => {
-    const js = getManifest('app.js');
+    const js = !isDev ? `/build${getManifest("app.js")}` : "/app.js";
 
     const sheet = new ServerStyleSheet();
 
@@ -39,9 +58,9 @@ const renderApp = (): RequestHandler => {
       link: new HttpLink({
         fetch,
         uri: API_URL,
-        credentials: 'include',
+        credentials: "include",
         headers: {
-          cookie: req.header('Cookie'),
+          cookie: req.header("Cookie"),
         },
       }),
       ssrMode: true,

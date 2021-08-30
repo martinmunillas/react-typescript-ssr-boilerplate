@@ -1,17 +1,13 @@
-import React from 'react';
-import Box from '../components/Atoms/Box';
-import Text from '../components/Atoms/Text';
-import Title from '../components/Atoms/Title';
+import React from "react";
 
 interface NotFoundProps {}
 
 const NotFound: React.FC<NotFoundProps> = ({}) => {
-  console.log('asdf')
   return (
-    <Box align='cc'>
-      <Title>404</Title>
-      <Text>Not Found</Text>
-    </Box>
+    <div>
+      <h1>404</h1>
+      <p>Not Found</p>
+    </div>
   );
 };
 
